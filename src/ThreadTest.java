@@ -23,9 +23,18 @@ public class ThreadTest {
                     }
                 }
             });
-            thread.start();
-            thread.join();
-        } catch (InterruptedException e) {
+//            thread.start();
+//            thread.join();
+            MyThreadFactory myThreadFactory = new MyThreadFactory("myfac");
+            Task task = new Task();
+            Thread t;
+            for (int i = 0; i < 10; i++){
+                t = myThreadFactory.newThread(task);
+                t.start();
+            }
+            System.out.println("Fac status:\n");
+            System.out.println(myThreadFactory.getStas());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -58,6 +67,18 @@ class MyThreadFactory implements ThreadFactory{
             stringBuffer.append("\n");
         }
         return stringBuffer.toString();
+    }
+}
+
+class Task implements Runnable{
+    @Override
+    public void run() {
+        try {
+            System.out.println("From task");
+            Thread.sleep(100);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 }
 
